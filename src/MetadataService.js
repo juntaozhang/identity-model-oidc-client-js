@@ -97,6 +97,10 @@ export class MetadataService {
         return this._getMetadataProperty("jwks_uri", true);
     }
 
+    getClientAssertion() {
+        return this._getMetadataProperty("client_assertion", false);
+    }
+
     _getMetadataProperty(name, optional=false) {
         Log.debug("MetadataService.getMetadataProperty for: " + name);
 

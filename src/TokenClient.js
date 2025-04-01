@@ -57,14 +57,22 @@ export class TokenClient {
             delete args.client_id;
             delete args.client_secret;
         }
-
-        return this._metadataService.getTokenEndpoint(false).then(url => {
-            Log.debug("TokenClient.exchangeCode: Received token endpoint");
-            return this._jsonService.postForm(url, args, basicAuth).then(response => {
-                Log.debug("TokenClient.exchangeCode: response received");
-                return response;
-            });
-        });
+        return this._metadataService.getClientAssertion()
+          .then(url => fetch(url))
+          .then(resp => resp.json())
+          .then(respObject => {
+              args.client_assertion_type = respObject.client_assertion_type;
+              args.client_assertion = respObject.client_assertion;
+              return this._metadataService.getTokenEndpoint(false);
+          })
+          .then(url => {
+              Log.debug("TokenClient.exchangeCode: Received token endpoint");
+              return this._jsonService.postForm(url, args, basicAuth);
+          })
+          .then(response => {
+              Log.debug("TokenClient.exchangeCode: response received");
+              return response;
+          });
     }
 
     exchangeRefreshToken(args = {}) {
