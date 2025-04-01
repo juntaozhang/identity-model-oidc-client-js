@@ -1,6 +1,6 @@
 {
   "name": "oidc-client",
-  "version": "1.11.5.ebay",
+  "version": "1.11.105",
   "description": "OpenID Connect (OIDC) & OAuth2 client library",
   "main": "lib/oidc-client.min.js",
   "scripts": {
